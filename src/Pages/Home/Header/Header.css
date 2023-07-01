@@ -1,7 +1,26 @@
 .nav-img{
     width: 80px;
 }
+.main-header{
+    width: 80%;
+    margin: auto;
+}
 .search{
     margin-left: 20%;
     margin-right: 10%;
+    border: 2px solid rgb(226, 224, 224);
+    border-radius: 5px;
+    padding: 0 5px;
+}
+.searchBox{
+    border: 0;
+    outline: 0;
+    padding: 8px 5px;
+    
+}
+.searchIcon{
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    /* color: white; */
 }
