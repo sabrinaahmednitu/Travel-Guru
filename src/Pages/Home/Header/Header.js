@@ -34,7 +34,12 @@ const Header = () => {
               <Nav.Link href="#action1">Blog</Nav.Link>
               <Nav.Link href="#action2">Contact</Nav.Link>
             </Nav>
-            <button className="">Login</button>
+            <Nav.Link href="/login" >
+              <button>Login</button>
+            </Nav.Link>
+            <Nav.Link href="/registration" >
+              <button>Sign up</button>
+            </Nav.Link>
           </Navbar.Collapse>
         </Container>
       </Navbar>
