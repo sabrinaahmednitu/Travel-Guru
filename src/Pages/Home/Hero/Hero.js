@@ -1,6 +1,7 @@
 import React from 'react';
 import './Hero.css';
 import hero from '../../../images/Rectangle 28.png'
+import Destination from '../Destination/Destination';
 
 const Hero = () => {
     return (
@@ -14,12 +15,15 @@ const Hero = () => {
                 headquarters in southeastern Bangladesh.It is famous mostly for
                 its long natural sandy beach,and it...
               </p>
-              <button className='button' > Booking <i class="fa-solid fa-arrow-right"></i> </button>
+              <button className="hero-button">
+                Booking <i class="fa-solid fa-arrow-right"></i>
+              </button>
             </div>
             <div className="hero-img">
               <img src={hero} alt="" />
             </div>
           </div>
+          <Destination></Destination>
         </div>
       </div>
     );

@@ -1,34 +1,54 @@
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import auth from '../../firebase.init';
+import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 
 const Registration = () => {
-  const NameRef = useRef();
+  const [createUserWithEmailAndPassword, user, loading, error] =
+    useCreateUserWithEmailAndPassword(auth);
+
   const EmailRef = useRef();
   const PassRef = useRef();
 
-    return (
-      <div>
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Control type="text" placeholder="Enter Name" />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Control type="email" placeholder="Enter email" />
-          </Form.Group>
+  const navigate = useNavigate('');
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-        </Form>
-      </div>
-    );
+  const handleForm = async (event) => {
+    event.preventDefault();
+    const email = EmailRef.current.value;
+    const password = PassRef.current.value;
+
+    await createUserWithEmailAndPassword( email, password);
+    console.log( email, password);
+  };
+
+  return (
+    <div
+      style={{
+        width: '30%',
+        margin: 'auto',
+      }}
+    >
+      <h1>Signup</h1>
+
+      <Form onSubmit={handleForm}>
+        <Form.Group className="mb-3" controlId="formBasicEmail">
+          <Form.Control ref={EmailRef} type="email" placeholder="Enter Email" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
+          <Form.Control ref={PassRef} type="password" placeholder="Password" />
+        </Form.Group>
+
+        <Form.Group className="mb-3" controlId="formBasicCheckbox">
+          <Form.Check type="checkbox" label="Check me out" />
+        </Form.Group>
+        <Button variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+    </div>
+  );
 };
 
 export default Registration;
