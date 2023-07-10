@@ -1,3 +1,9 @@
+.des-main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .dCard img{
 width: 100%;
+padding: 5px;
 }

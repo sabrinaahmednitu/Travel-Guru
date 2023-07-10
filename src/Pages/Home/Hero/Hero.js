@@ -5,7 +5,7 @@ import Destination from '../Destination/Destination';
 
 const Hero = () => {
     return (
-      <div>
+      <div className='hero-section' >
         <div className="hero">
           <div className="hero-container container">
             <div className="hero-text">

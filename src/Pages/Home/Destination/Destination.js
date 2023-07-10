@@ -18,10 +18,8 @@ const Destination = () => {
   };
 
   return (
-    <div className="container mt-5 mb-5">
-      <div style={{
-        width:"90%" ,margin:"auto"
-      }} >
+    <section className='des-main' >
+      <div className="container mt-5 mb-5 ">
         <Slider {...settings}>
           <div className="dCard">
             <img src={img1} alt="" />
@@ -49,7 +47,7 @@ const Destination = () => {
           </div>
         </Slider>
       </div>
-    </div>
+    </section>
   );
 };
 

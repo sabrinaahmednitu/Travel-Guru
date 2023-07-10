@@ -35,10 +35,7 @@ const Header = () => {
               <Nav.Link href="#action2">Contact</Nav.Link>
             </Nav>
             <Nav.Link href="/login" >
-              <button>Login</button>
-            </Nav.Link>
-            <Nav.Link href="/registration" >
-              <button>Sign up</button>
+              <button className='login-btn' >Login</button>
             </Nav.Link>
           </Navbar.Collapse>
         </Container>

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import auth from '../../firebase.init';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Registration = () => {
   const [createUserWithEmailAndPassword, user, loading, error] =
@@ -23,15 +23,10 @@ const Registration = () => {
   };
 
   return (
-    <div
-      style={{
-        width: '30%',
-        margin: 'auto',
-      }}
-    >
-      <h1>Signup</h1>
+    <div className='mt-5 mb-5' >
+      <h1 className="text-center">Signup</h1>
 
-      <Form onSubmit={handleForm}>
+      <Form onSubmit={handleForm} className="w-50 mx-auto ">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control ref={EmailRef} type="email" placeholder="Enter Email" />
         </Form.Group>
@@ -47,6 +42,9 @@ const Registration = () => {
           Submit
         </Button>
       </Form>
+      <p className="text-center">
+        if you Dont have any account <Link to="/login">Please Signup</Link>{' '}
+      </p>
     </div>
   );
 };
