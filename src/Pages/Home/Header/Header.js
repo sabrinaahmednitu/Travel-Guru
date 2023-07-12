@@ -1,9 +1,12 @@
 import React from 'react';
 import { Container, Form, Nav, Navbar } from 'react-bootstrap';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import auth from '../../../firebase.init';
 import icon from '../../../images/logo.png';
 import './Header.css';
 
 const Header = () => {
+  const [user, loading, error] = useAuthState(auth);
   return (
     <div className="main-header">
       <Navbar expand="lg">
@@ -29,12 +32,12 @@ const Header = () => {
               style={{ maxHeight: '100px' }}
               navbarScroll
             >
-              <Nav.Link href="#action1">News</Nav.Link>
+              <Nav.Link href="/">Home</Nav.Link>
               <Nav.Link href="/destination">Destination</Nav.Link>
-              <Nav.Link href="#action1">Blog</Nav.Link>
-              <Nav.Link href="#action2">Contact</Nav.Link>
+              <Nav.Link href="/contact">Contact</Nav.Link>
             </Nav>
-            <Nav.Link href="/login" >
+            <Nav.Link href="/login">
+          
               <button className='login-btn' >Login</button>
             </Nav.Link>
           </Navbar.Collapse>

@@ -1,20 +1,48 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
-import { Link } from 'react-router-dom';
+import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { Link, useNavigate } from 'react-router-dom';
+import PageTitle from '../Shared/PageTitle/PageTitle';
+import auth from '../../firebase.init';
 
 const Login = () => {
+
+  const [signInWithEmailAndPassword, user, loading, error] =
+    useSignInWithEmailAndPassword(auth);
+  
+  const EmailRef = useRef('');
+  const passwordRef = useRef('');
+
+  const Navigate=useNavigate('')
+ 
+
+  const handleForm = (event) => {
+    event.preventDefault();
+     const email = EmailRef.current.value;
+    const pass = passwordRef.current.value;
+  console.log(email,pass)
+  signInWithEmailAndPassword(email, pass);
+  }
+ 
+  if (user) {
+   Navigate('/')
+  }
+
+
   return (
     <div>
-      <Helmet>
-        <title>Login - Golden Fork</title>
-      </Helmet>
+      <PageTitle title="Login"></PageTitle>
       <div className="mt-5">
         <h1 className="text-center">Login</h1>
-        <Form className="w-50 mx-auto ">
+        <Form className="w-50 mx-auto" onSubmit={handleForm}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
-            <Form.Control type="email" placeholder="Enter email" />
+            <Form.Control
+              required
+              ref={EmailRef}
+              type="email"
+              placeholder="Enter email"
+            />
             <Form.Text className="text-muted">
               We'll never share your email with anyone else.
             </Form.Text>
@@ -22,7 +50,11 @@ const Login = () => {
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
             <Form.Label>Password</Form.Label>
-            <Form.Control type="password" placeholder="Password" />
+            <Form.Control
+              ref={passwordRef}
+              type="password"
+              placeholder="Password"
+            />
           </Form.Group>
           <Form.Group className="mb-3" controlId="formBasicCheckbox">
             <Form.Check type="checkbox" label="Check me out" />

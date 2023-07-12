@@ -6,7 +6,7 @@ import './Destination.css';
 import img1 from '../../../images/Sreemongol.png';
 import img2 from '../../../images/Sajek.png';
 import img3 from '../../../images/sundorbon.png';
-import { Helmet } from 'react-helmet-async';
+import PageTitle from '../../Shared/PageTitle/PageTitle';
 
 const Destination = () => {
   const settings = {
@@ -20,9 +20,7 @@ const Destination = () => {
 
   return (
     <section className="des-main">
-      <Helmet>
-        <title>Destination - Golden Fork</title>
-      </Helmet>
+     <PageTitle title="Destination" ></PageTitle>
       <div className="container mt-5 mb-5 ">
         <Slider {...settings}>
           <div className="dCard">

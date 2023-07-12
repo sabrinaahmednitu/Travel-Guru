@@ -1,13 +1,12 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import PageTitle from '../../Shared/PageTitle/PageTitle';
 import Hero from '../Hero/Hero';
 
 const Home = () => {
     return (
       <div>
-        <Helmet>
-          <title>Home - Golden Fork</title>
-        </Helmet>
+        <PageTitle title="Home" ></PageTitle>
         <Hero></Hero>
       </div>
     );
