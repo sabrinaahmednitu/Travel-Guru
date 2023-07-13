@@ -2,8 +2,9 @@ import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import auth from '../../firebase.init';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import PageTitle from '../Shared/PageTitle/PageTitle';
+import SocialLogin from '../Login/SocialLogin/SocialLogin';
 
 const Registration = () => {
   const [createUserWithEmailAndPassword, user, loading, error] =
@@ -25,12 +26,16 @@ const Registration = () => {
     console.log( name, email, password);
   };
 
+  if (user) {
+    Navigate('/')
+  }
+
   return (
-    <div className="mt-5 mb-5">
+    <div className="mt-5 mb-5 w-50 mx-auto ">
       <PageTitle title="SignUp"></PageTitle>
       <h1 className="text-center">Signup</h1>
 
-      <Form onSubmit={handleForm} className="w-50 mx-auto ">
+      <Form onSubmit={handleForm} >
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Control ref={NameRef} type="text" placeholder="Enter Name" />
         </Form.Group>
@@ -53,6 +58,7 @@ const Registration = () => {
       <p className="text-center">
         Already have any account <Link to="/login">Please Login</Link>{' '}
       </p>
+      <SocialLogin></SocialLogin>
     </div>
   );
 };

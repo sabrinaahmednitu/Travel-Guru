@@ -6,6 +6,7 @@ import Header from './Pages/Home/Header/Header';
 import Registration from './Pages/Registration/Registration';
 import Login from './Pages/Login/Login';
 import Destination from './Pages/Home/Destination/Destination';
+import RequireAuth from './Pages/Shared/RequireAuth/RequireAuth';
 
 function App() {
   return (
@@ -15,7 +16,11 @@ function App() {
         <Route path="/" element={<Home></Home>} ></Route>
         <Route path="/registration" element={<Registration></Registration>} ></Route>
         <Route path="/login" element={<Login></Login>} ></Route>
-        <Route path="/destination" element={<Destination></Destination>} ></Route>
+        <Route path="/destination" element={
+          <RequireAuth>
+            <Destination></Destination>
+          </RequireAuth>
+        } ></Route>
       </Routes>
     </div>
   );

@@ -1,11 +1,15 @@
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import PageTitle from '../Shared/PageTitle/PageTitle';
 import auth from '../../firebase.init';
+import SocialLogin from './SocialLogin/SocialLogin';
 
 const Login = () => {
+
+  const location = useLocation();
+  let form = location.state?.form?.pathname ||  "/";
 
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
@@ -25,16 +29,16 @@ const Login = () => {
   }
  
   if (user) {
-   Navigate('/')
+    Navigate(form, {replace:true})
   }
 
 
   return (
-    <div>
+    <div className="w-50 mx-auto">
       <PageTitle title="Login"></PageTitle>
       <div className="mt-5">
         <h1 className="text-center">Login</h1>
-        <Form className="w-50 mx-auto" onSubmit={handleForm}>
+        <Form onSubmit={handleForm}>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Email address</Form.Label>
             <Form.Control
@@ -67,6 +71,7 @@ const Login = () => {
           if you Dont have any account{' '}
           <Link to="/registration">Please Signup</Link>{' '}
         </p>
+        <SocialLogin></SocialLogin>
       </div>
     </div>
   );
