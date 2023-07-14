@@ -9,6 +9,10 @@ import { useState } from 'react';
 
 const Registration = () => {
   const [agree, setAgree] = useState('false');
+
+
+
+
   const [createUserWithEmailAndPassword, user, loading, error] =
     useCreateUserWithEmailAndPassword(auth);
 
@@ -18,14 +22,15 @@ const Registration = () => {
 
   const navigate = useNavigate('');
 
-  const handleForm = async (event) => {
+  const handleRegForm =(event) => {
     event.preventDefault();
     const name = NameRef.current.value;
     const email = EmailRef.current.value;
     const password = PassRef.current.value;
     console.log(name, email, password);
-
-    await createUserWithEmailAndPassword(name, email, password);
+    if (agree) {
+      createUserWithEmailAndPassword(name, email, password);
+    }
   };
 
   const navigateToLogin = (event) => {
@@ -46,7 +51,7 @@ const Registration = () => {
       <PageTitle title="SignUp"></PageTitle>
       <h1 className="text-center">Signup</h1>
 
-      <Form onSubmit={handleForm}>
+      <Form onSubmit={handleRegForm}>
         <Form.Group className="mb-3" controlId="formBasicName">
           <Form.Control ref={NameRef} type="text" placeholder="Enter Name" />
         </Form.Group>
@@ -60,9 +65,15 @@ const Registration = () => {
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Accept Terms and Condition" />
+          <Form.Check
+            onClick={() => setAgree(!agree)}
+            className={agree ?  'text-danger' : 'text-success' }
+            type="checkbox"
+            label="Accept Terms and Condition"
+          />
         </Form.Group>
         <Button
+          disabled={agree}
           className="d-block mx-auto w-75"
           variant="primary"
           type="submit"
