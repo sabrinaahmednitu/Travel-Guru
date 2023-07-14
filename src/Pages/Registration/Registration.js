@@ -1,49 +1,68 @@
 import React, { useRef } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import {
+  useCreateUserWithEmailAndPassword,
+  useUpdateProfile,
+} from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
 import PageTitle from '../Shared/PageTitle/PageTitle';
 import SocialLogin from '../Login/SocialLogin/SocialLogin';
 import auth from '../../firebase.init';
 import { useState } from 'react';
+import Loading from '../Shared/Loading/Loading';
 
 const Registration = () => {
   const [agree, setAgree] = useState('false');
 
-
-
+  const [updateProfile, updating, error1] = useUpdateProfile(auth);
 
   const [createUserWithEmailAndPassword, user, loading, error] =
-    useCreateUserWithEmailAndPassword(auth);
+    useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true });
 
   const NameRef = useRef();
   const EmailRef = useRef();
   const PassRef = useRef();
 
   const navigate = useNavigate('');
+ if (loading || updating) {
+   return <Loading></Loading>;
+ }
+  
+  if (user) {
+    console.log('user', user);
+  }
 
-  const handleRegForm =(event) => {
+  const handleRegForm = async (event) => {
     event.preventDefault();
     const name = NameRef.current.value;
     const email = EmailRef.current.value;
     const password = PassRef.current.value;
     console.log(name, email, password);
-    if (agree) {
-      createUserWithEmailAndPassword(name, email, password);
-    }
+
+   
+    await createUserWithEmailAndPassword(name, email, password);
+    await updateProfile({ displayName: name });
+    console.log('update profile');
+    navigate('/');
+  //  if (success) {
+  //    alert('Updated profile');
+  //  }
+  
   };
+
 
   const navigateToLogin = (event) => {
     navigate('/login');
   };
 
-  if (user) {
-    navigate('/');
-  }
 
   let errorElement;
-  if (error) {
-    errorElement = <p>{error?.message}</p>;
+  if (error || error1) {
+    errorElement = (
+      <p>
+        {error?.message} {error1?.message}{' '}
+      </p>
+    );
   }
 
   return (
@@ -67,7 +86,7 @@ const Registration = () => {
         <Form.Group className="mb-3" controlId="formBasicCheckbox">
           <Form.Check
             onClick={() => setAgree(!agree)}
-            className={agree ?  'text-danger' : 'text-success' }
+            className={agree ? 'text-danger' : 'text-success'}
             type="checkbox"
             label="Accept Terms and Condition"
           />

@@ -1,13 +1,17 @@
 import React, { useRef } from 'react';
 import { Button, Form, ToastContainer } from 'react-bootstrap';
-import { useSendEmailVerification, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import {
+  useSendPasswordResetEmail,
+  useSignInWithEmailAndPassword,
+} from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import auth from '../../firebase.init';
+import Loading from '../Shared/Loading/Loading';
 import PageTitle from '../Shared/PageTitle/PageTitle';
 import SocialLogin from './SocialLogin/SocialLogin';
-
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
   const location = useLocation();
@@ -15,9 +19,8 @@ const Login = () => {
 
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
-  
-  const [sendEmailVerification, sending, ] =
-    useSendEmailVerification(auth);
+
+  const [sendPasswordResetEmail, sending] = useSendPasswordResetEmail(auth);
 
   const EmailRef = useRef('');
   const passwordRef = useRef('');
@@ -27,7 +30,7 @@ const Login = () => {
     event.preventDefault();
     const email = EmailRef.current.value;
     const pass = passwordRef.current.value;
-    console.log(email,pass)
+    console.log(email, pass);
     await signInWithEmailAndPassword(email, pass);
   };
 
@@ -35,22 +38,26 @@ const Login = () => {
   if (error) {
     errorElement = <p className="text-danger">{error?.message}</p>;
   }
-
+  if (loading || sending) {
+    return <Loading></Loading>;
+  }
   if (user) {
     navigate(form, { replace: true });
   }
 
   const resetPassword = async () => {
-       const email = EmailRef.current.value;
-      const success = await sendEmailVerification(email);
-      if (success) {
-        toast('Sent email');
-      }
-  };
-  
-  
+    const email = EmailRef.current.value;
 
-  const navigateRegister = (event) => {
+    if (email) {
+      await sendPasswordResetEmail(email);
+      toast('Sent email');
+    }
+    else {
+      toast('please enter your email')
+    }
+  };
+
+  const navigateRegister = () => {
     navigate('/registration');
   };
 
@@ -89,14 +96,13 @@ const Login = () => {
         <p className="text-center mt-3">{errorElement}</p>
         <p className="text-center">
           Did you Forget your password ?
-          <Link
-            to="/registration"
-            className="text-decoration-none"
+          <button
+            className=" btn btn-link text-decoration-none"
             onClick={resetPassword}
           >
             {' '}
             Reset Password
-          </Link>
+          </button>
         </p>
         <p className="text-center">
           New to Travel-Guru ?{' '}
