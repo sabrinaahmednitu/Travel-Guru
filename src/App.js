@@ -8,6 +8,7 @@ import Login from './Pages/Login/Login';
 import Destination from './Pages/Home/Destination/Destination';
 import RequireAuth from './Pages/Shared/RequireAuth/RequireAuth';
 
+
 function App() {
   return (
     <div>

@@ -1,37 +1,58 @@
 import React, { useRef } from 'react';
-import { Button, Form } from 'react-bootstrap';
-import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { Button, Form, ToastContainer } from 'react-bootstrap';
+import { useSendEmailVerification, useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import PageTitle from '../Shared/PageTitle/PageTitle';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import auth from '../../firebase.init';
+import PageTitle from '../Shared/PageTitle/PageTitle';
 import SocialLogin from './SocialLogin/SocialLogin';
 
-const Login = () => {
 
+const Login = () => {
   const location = useLocation();
-  let form = location.state?.form?.pathname ||  "/";
+  let form = location.state?.form?.pathname || '/';
 
   const [signInWithEmailAndPassword, user, loading, error] =
     useSignInWithEmailAndPassword(auth);
   
+  const [sendEmailVerification, sending, ] =
+    useSendEmailVerification(auth);
+
   const EmailRef = useRef('');
   const passwordRef = useRef('');
+  const navigate = useNavigate('');
 
-  const Navigate=useNavigate('')
- 
-
-  const handleForm = (event) => {
+  const handleForm = async (event) => {
     event.preventDefault();
-     const email = EmailRef.current.value;
+    const email = EmailRef.current.value;
     const pass = passwordRef.current.value;
-  console.log(email,pass)
-  signInWithEmailAndPassword(email, pass);
-  }
- 
-  if (user) {
-    Navigate(form, {replace:true})
+    console.log(email,pass)
+    await signInWithEmailAndPassword(email, pass);
+  };
+
+  let errorElement;
+  if (error) {
+    errorElement = <p className="text-danger">{error?.message}</p>;
   }
 
+  if (user) {
+    navigate(form, { replace: true });
+  }
+
+  const resetPassword = async () => {
+       const email = EmailRef.current.value;
+      const success = await sendEmailVerification(email);
+      if (success) {
+        toast('Sent email');
+      }
+  };
+  
+  
+
+  const navigateRegister = (event) => {
+    navigate('/registration');
+  };
 
   return (
     <div className="w-50 mx-auto">
@@ -47,9 +68,6 @@ const Login = () => {
               type="email"
               placeholder="Enter email"
             />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -60,18 +78,38 @@ const Login = () => {
               placeholder="Password"
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="formBasicCheckbox">
-            <Form.Check type="checkbox" label="Check me out" />
-          </Form.Group>
-          <Button variant="primary" type="submit">
-            Submit
+          <Button
+            className="d-block mx-auto w-75"
+            variant="primary"
+            type="submit"
+          >
+            Login
           </Button>
         </Form>
+        <p className="text-center mt-3">{errorElement}</p>
         <p className="text-center">
-          if you Dont have any account{' '}
-          <Link to="/registration">Please Signup</Link>{' '}
+          Did you Forget your password ?
+          <Link
+            to="/registration"
+            className="text-decoration-none"
+            onClick={resetPassword}
+          >
+            {' '}
+            Reset Password
+          </Link>
+        </p>
+        <p className="text-center">
+          New to Travel-Guru ?{' '}
+          <Link
+            to="/registration"
+            className="text-decoration-none"
+            onClick={navigateRegister}
+          >
+            Please Signup
+          </Link>
         </p>
         <SocialLogin></SocialLogin>
+        <ToastContainer />
       </div>
     </div>
   );
